@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Modal, TextInput, TouchableWithoutFeedback, Keyboard, Button, TouchableOpacity} from 'react-native';
 
 
 const ModalScreen = (props) => {
+    const [inputValue, setInputValue] = useState('');
+
     return (
         <Modal visible={props.modalVisible} animationType='fade'>
             <TouchableWithoutFeedback
@@ -11,9 +13,9 @@ const ModalScreen = (props) => {
             }}>
                 <View style={styles.container}>
                     <Text>Write your task under!</Text>
-                    <TextInput maxLength={40} style={styles.inputStyle} />
+                    <TextInput maxLength={40} style={styles.inputStyle} value={inputValue} onChangeText={(text) => setInputValue(text)} placeholder='Write something to do!'/>
                     <View style={styles.bottomButton}>
-                        <TouchableOpacity style={styles.buttonStyleNewTask} activeOpacity={.4} onPress={() => console.log('ok') }>
+                        <TouchableOpacity style={styles.buttonStyleNewTask} activeOpacity={.4} onPress={() => { props.addNewTask(inputValue), setInputValue('')}}>
                             <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>ADD NEW TASK</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttonStyleClose} activeOpacity={.4} onPress={props.closeModal}>

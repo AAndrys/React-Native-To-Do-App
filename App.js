@@ -17,6 +17,7 @@ import InfoStackScreen from './screens/Info';
 
 
 const Drawer = createDrawerNavigator();
+
 // function LoginScreen({ navigation }) {
 //   return (
 //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
