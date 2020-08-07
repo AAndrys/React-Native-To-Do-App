@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Vibration, FlatList, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Vibration, FlatList, TouchableNativeFeedback, Alert, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars, faJournalWhills } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import ModalScreen from './Modal';
+import taskItemScreen from './TaskItem';
 
 
 const HomeStack = createStackNavigator();
@@ -21,11 +22,20 @@ const HomeScreen = ({ navigation }) => {
         ])
         console.log(itemList);
     }
+    const removeItem = (item) => {
+        // console.log(item)
+        setItemList((arrayItems) => {
+            return arrayItems.filter((itemData) => itemData !== item.item )
+        })
+    }
+    const longPressAlert = (item) => {
+        Alert.alert('Task menu', 'Do you want to delete this task?', [{ text: 'Yes', onPress: () => { removeItem(item) } }, { text: 'No', onPress: () => { }, style: "cancel" }] )
+    }
 
     const renderItem = (item) => {
         return (
             <View style={styles.taskContainer}>
-                <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#696969', true)}>
+                <TouchableNativeFeedback background={TouchableNativeFeedback.Ripple('#696969', true)} onPress={() => navigation.navigate('taskItem', { itemData: item })} onLongPress={longPressAlert.bind(this, item)}>
                     <View style={styles.taskStyle}>
                         <View style={{ paddingHorizontal: 20 }}>
                             <Text style={{ color: 'black' }}>{item.item}</Text>
@@ -58,8 +68,8 @@ const HomeScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 {/* <Button
-                    onPress={() => navigation.navigate('InfoScreen')}
-                    title="Go to InfoScreen"
+                    onPress={() => navigation.navigate('taskItem', { itemId: 543 })}
+                    title="Go to taskItem"
                 /> */}
         </View>
 
@@ -87,7 +97,7 @@ const HomeStackScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 )
             }} />
-            {/* <HomeStack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} /> */}
+            <HomeStack.Screen name="taskItem" component={taskItemScreen} options={{ title: 'Your task' }} />
         </HomeStack.Navigator>
     );
 };
